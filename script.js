@@ -1,12 +1,18 @@
 let resultsContainer = document.getElementsByClassName("container")[0]
-
-const validateInput = (el) => {
-    if(el.value === ""){
-        resultsContainer.innerHTML = "<p>Type something in the above search input</p>"
-    }else{
-        generateResults(el.value, el)
+const debounce = (func, delay) => {
+    let timer
+    return function() {
+        clearTimeout(timer)
+        timer = setTimeout(() => { func() }, delay)
     }
 }
+const validateInput = debounce((el) => {
+    if(el.value === ""){
+        resultsContainer.innerHTML = "<p>Type something in the above search input</p>";
+    }else{
+        generateResults(el.value, el);
+    }
+}, 500);
 
 const generateResults = (searchValue, inputField) => {
     fetch(
@@ -35,3 +41,4 @@ const generateResults = (searchValue, inputField) => {
         }
     })
 }
+
